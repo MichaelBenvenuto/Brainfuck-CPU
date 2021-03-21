@@ -19,14 +19,15 @@ entity bf_pcu is
         i_rst : in std_logic;
 
         i_loopback : in std_logic;
-        i_loopback_ptr : in std_logic_vector(15 downto 0);
+        i_loopback_ptr : in std_logic_vector(9 downto 0);
 
-        o_pcu : out std_logic_vector(15 downto 0)
+        o_pcu : out std_logic_vector(9 downto 0)
     );
 end bf_pcu;
 
 architecture arch of bf_pcu is
-    signal pcu : std_logic_vector(15 downto 0) := (others => '0');
+    signal pcu : std_logic_vector(9 downto 0) := (others => '0');
+    signal pcu_x : std_logic_vector(9 downto 0);
 begin
     process(i_clk)
     begin
@@ -34,14 +35,11 @@ begin
             if i_rst = '1' then
                 pcu <= (others => '0');
             else
-                if i_loopback = '1' then
-                    pcu <= i_loopback_ptr;
-                else
-                    pcu <= pcu + '1';
-                end if;
+                pcu <= pcu_x + '1';
             end if;
         end if;
     end process;
 
-    o_pcu <= pcu;
+    pcu_x <= i_loopback_ptr when i_loopback = '1' else pcu;
+    o_pcu <= pcu_x;
 end arch;
