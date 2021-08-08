@@ -4,6 +4,18 @@ use IEEE.numeric_std.all;
 use IEEE.std_logic_textio.all;
 use std.textio.all;
 
+-- inputs:
+-- i_clk : system hw clock
+-- i_rst : system hw reset
+-- i_prg : system programming signal
+-- i_read_addr : instruction read address (PCU)
+-- i_prg_addr : programming write address
+-- i_prg_data : programming data
+
+-- outputs:
+-- o_hold : signal for halting CPU pipeline
+-- o_read_data : instruction read from imem
+
 entity bf_imem is
     port(
         i_clk : in std_logic;
