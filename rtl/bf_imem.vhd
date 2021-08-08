@@ -15,6 +15,7 @@ use std.textio.all;
 -- outputs:
 -- o_hold : signal for halting CPU pipeline
 -- o_read_data : instruction read from imem
+-- o_pcu : pipeline pcu output
 
 entity bf_imem is
     port(
@@ -27,7 +28,9 @@ entity bf_imem is
         o_read_data : out std_logic_vector(7 downto 0);
 
         i_prg_addr : in std_logic_vector(15 downto 0);
-        i_prg_data : in std_logic_vector(7 downto 0)
+        i_prg_data : in std_logic_vector(7 downto 0);
+
+        o_pcu : out std_logic_vector(15 downto 0)
     );
 end bf_imem;
 
@@ -51,13 +54,17 @@ begin
     process(i_clk)
     begin
 
-    if (i_rst or i_prg) = '1' then
-        o_read_data <= (others => '0');
-        if i_prg = '1' then
-            memory(to_integer(unsigned(i_prg_addr))) <= i_prg_data;
+    if rising_edge(i_clk) then
+        if (i_rst or i_prg) = '1' then
+            o_read_data <= (others => '0');
+            o_pcu <= (others => '0');
+            if i_prg = '1' then
+                memory(to_integer(unsigned(i_prg_addr))) <= i_prg_data;
+            end if;
+        else
+            o_pcu <= i_read_addr;
+            o_read_data <= memory(to_integer(unsigned(i_read_addr)));
         end if;
-    else
-        o_read_data <= memory(to_integer(unsigned(i_read_addr)));
     end if;
 
     end process;
