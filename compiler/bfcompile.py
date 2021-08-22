@@ -34,8 +34,13 @@ for o, a in opts:
         print(usage)
         sys.exit(0)
 
-if input_file == None or output_format not in ('HEX', 'BIN', 'OCT'):
+if input_file == None:
     print("Expected input file")
+    print(usage)
+    sys.exit(2)
+
+if output_format not in ('HEX', 'BIN', 'OCT'):
+    print("Unexpected output format")
     print(usage)
     sys.exit(2)
 
