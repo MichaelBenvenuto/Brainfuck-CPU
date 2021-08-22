@@ -19,9 +19,9 @@ end bf_regfile;
 
 architecture arch of bf_regfile is
     type memory_t is array(0 to 65535) of std_logic_vector(7 downto 0);
+    shared variable memory : memory_t := (others => x"00");
 begin
     process(i_clk)
-        variable memory : memory_t := (others => x"00");
     begin
         if rising_edge(i_clk) then
             if i_rst = '1' then
