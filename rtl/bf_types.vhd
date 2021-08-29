@@ -10,6 +10,12 @@ package bf_types is
         halt : std_logic;
     end record system_t;
 
+    type programmer_t is record
+        en : std_logic;
+        addr : pcu_t;
+        data : instr_t;
+    end record programmer_t;
+
     subtype pcu_t is unsigned(12 downto 0);
     subtype data_t is std_logic_vector(7 downto 0);
     subtype instr_t is std_logic_vector(7 downto 0);
